@@ -12,12 +12,12 @@ a:hover {
 body {
   font-family: "Baloo 2", Arial, sans-serif;
   font-size: 1.3rem;
-  background: #f9f6f1;
+  background: #ffc0cb;
   margin: 0;
   color: #222;
 }
 header {
-  background: #f9f6f1;
+  background: #ffc0cb;
   padding: 1.2rem 2.5rem;
   display: flex;
   align-items: center;
