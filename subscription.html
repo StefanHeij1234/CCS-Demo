@@ -18,7 +18,7 @@
           <a href="index.html">Home</a>
           <a href="bundles.html">Bundles</a>
           <a href="personality-quiz.html" class="quiz-link">🌟 Fruit Quiz</a>
-          <a href="subscription.html" class="subscription-link">🍎 Subscription</a>
+          <a href="subscription.html" class="subscription-link active">🍎 Subscription</a>
         </div>
         <a href="basket.html" class="basket-link" aria-label="View shopping basket" style="position: relative">
           <img src="img/basket-icon.png" class="basket-img" alt="Shopping basket icon" />
@@ -28,61 +28,292 @@
     </div>
   </header>
   <main id="main-content" role="main">
-    <div class="content-box" style="max-width: 500px; margin: 2rem auto;">
-      <h1>Personalized Fruit Subscription</h1>
-      <form id="subscriptionForm">
-        <label for="boxSize">Box Size:</label>
-        <select id="boxSize" name="boxSize" required>
-          <option value="">Select size</option>
-          <option value="small">Small (5 fruits)</option>
-          <option value="medium">Medium (10 fruits)</option>
-          <option value="large">Large (20 fruits)</option>
-        </select>
-        <br /><br />
-        <label>Choose your fruits:</label><br />
-        <input type="checkbox" name="fruits" value="Apple" /> Apple 🍏<br />
-        <input type="checkbox" name="fruits" value="Banana" /> Banana 🍌<br />
-        <input type="checkbox" name="fruits" value="Lemon" /> Lemon 🍋<br />
-        <br />
-        <label for="frequency">Delivery Frequency:</label>
-        <select id="frequency" name="frequency" required>
-          <option value="">Select frequency</option>
-          <option value="weekly">Weekly</option>
-          <option value="biweekly">Bi-Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
-        <br /><br />
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required />
-        <br /><br />
-        <label for="address">Address:</label>
-        <input type="text" id="address" name="address" required />
-        <br /><br />
-        <button type="submit" class="cart-action-btn">Subscribe</button>
-      </form>
-      <div id="confirmationMsg" style="display:none; color:green; margin-top:1rem;"></div>
+    <div class="content-box subscription-container">
+      <h1>🍎 Personalized Fruit Subscription</h1>
+      <p class="subscription-intro">Get fresh, personalized fruit boxes delivered to your door! Choose your favorite fruits, delivery frequency, and enjoy healthy eating made easy.</p>
+      
+      <div class="subscription-tabs">
+        <button class="tab-button active" onclick="showTab('new-subscription')">New Subscription</button>
+        <button class="tab-button" onclick="showTab('my-subscriptions')">My Subscriptions</button>
+      </div>
+
+      <!-- New Subscription Form -->
+      <div id="new-subscription" class="tab-content active">
+        <form id="subscriptionForm" class="subscription-form">
+          <div class="form-group">
+            <label for="boxSize">📦 Box Size:</label>
+            <select id="boxSize" name="boxSize" required>
+              <option value="">Select size</option>
+              <option value="small">Small (5 fruits) - $15</option>
+              <option value="medium">Medium (10 fruits) - $25</option>
+              <option value="large">Large (20 fruits) - $45</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>🍎 Choose your fruits:</label>
+            <div class="fruit-selection">
+              <label class="fruit-option">
+                <input type="checkbox" name="fruits" value="Apple" />
+                <span>Apple 🍏</span>
+              </label>
+              <label class="fruit-option">
+                <input type="checkbox" name="fruits" value="Banana" />
+                <span>Banana 🍌</span>
+              </label>
+              <label class="fruit-option">
+                <input type="checkbox" name="fruits" value="Lemon" />
+                <span>Lemon 🍋</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="frequency">🚚 Delivery Frequency:</label>
+            <select id="frequency" name="frequency" required>
+              <option value="">Select frequency</option>
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Bi-Weekly (Every 2 weeks)</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="name">👤 Name:</label>
+            <input type="text" id="name" name="name" required placeholder="Enter your full name" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">📧 Email:</label>
+            <input type="email" id="email" name="email" required placeholder="Enter your email address" />
+          </div>
+
+          <div class="form-group">
+            <label for="address">🏠 Address:</label>
+            <textarea id="address" name="address" required placeholder="Enter your delivery address" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">📞 Phone (Optional):</label>
+            <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" />
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="terms" name="terms" required />
+              <span>I agree to the <a href="#" onclick="showTerms()">Terms and Conditions</a></span>
+            </label>
+          </div>
+
+          <button type="submit" class="cart-action-btn subscribe-btn">Subscribe Now</button>
+        </form>
+        <div id="confirmationMsg" class="confirmation-message" style="display:none;"></div>
+      </div>
+
+      <!-- My Subscriptions -->
+      <div id="my-subscriptions" class="tab-content">
+        <div id="subscriptionsList" class="subscriptions-list">
+          <p class="no-subscriptions">No subscriptions found. Create your first subscription above!</p>
+        </div>
+      </div>
     </div>
   </main>
   <script>
-    document.getElementById('subscriptionForm').onsubmit = function(e) {
-      e.preventDefault();
-      const boxSize = document.getElementById('boxSize').value;
-      const frequency = document.getElementById('frequency').value;
-      const name = document.getElementById('name').value;
-      const address = document.getElementById('address').value;
-      const fruits = Array.from(document.querySelectorAll('input[name="fruits"]:checked')).map(cb => cb.value);
-      if (!boxSize || !frequency || !name || !address || fruits.length === 0) {
-        alert('Please fill in all fields and select at least one fruit.');
+    // Tab functionality
+    function showTab(tabName) {
+      // Hide all tab contents
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabContents.forEach(content => content.classList.remove('active'));
+      
+      // Remove active class from all tab buttons
+      const tabButtons = document.querySelectorAll('.tab-button');
+      tabButtons.forEach(button => button.classList.remove('active'));
+      
+      // Show selected tab content
+      document.getElementById(tabName).classList.add('active');
+      
+      // Add active class to clicked button
+      event.target.classList.add('active');
+      
+      // Load subscriptions if viewing my subscriptions
+      if (tabName === 'my-subscriptions') {
+        loadSubscriptions();
+      }
+    }
+
+    // Load and display subscriptions
+    function loadSubscriptions() {
+      const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+      const subscriptionsList = document.getElementById('subscriptionsList');
+      
+      if (subscriptions.length === 0) {
+        subscriptionsList.innerHTML = '<p class="no-subscriptions">No subscriptions found. Create your first subscription above!</p>';
         return;
       }
-      const subscription = { boxSize, frequency, name, address, fruits, date: new Date().toISOString() };
+      
+      subscriptionsList.innerHTML = subscriptions.map((sub, index) => `
+        <div class="subscription-card">
+          <div class="subscription-header">
+            <h3>Subscription #${index + 1}</h3>
+            <span class="subscription-date">${new Date(sub.date).toLocaleDateString()}</span>
+          </div>
+          <div class="subscription-details">
+            <p><strong>Box Size:</strong> ${sub.boxSize.charAt(0).toUpperCase() + sub.boxSize.slice(1)}</p>
+            <p><strong>Fruits:</strong> ${sub.fruits.join(', ')}</p>
+            <p><strong>Frequency:</strong> ${sub.frequency.charAt(0).toUpperCase() + sub.frequency.slice(1)}</p>
+            <p><strong>Name:</strong> ${sub.name}</p>
+            <p><strong>Email:</strong> ${sub.email || 'Not provided'}</p>
+            <p><strong>Address:</strong> ${sub.address}</p>
+            ${sub.phone ? `<p><strong>Phone:</strong> ${sub.phone}</p>` : ''}
+          </div>
+          <div class="subscription-actions">
+            <button class="cancel-btn" onclick="cancelSubscription(${index})">Cancel Subscription</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Cancel subscription
+    function cancelSubscription(index) {
+      if (confirm('Are you sure you want to cancel this subscription?')) {
+        const subscriptions = JSON.parse(localStorage.getItem('subscriptions') || '[]');
+        subscriptions.splice(index, 1);
+        localStorage.setItem('subscriptions', JSON.stringify(subscriptions));
+        loadSubscriptions();
+        showSuccessMessage('Subscription cancelled successfully.');
+      }
+    }
+
+    // Show success message
+    function showSuccessMessage(message) {
+      const confirmationMsg = document.getElementById('confirmationMsg');
+      confirmationMsg.innerHTML = `<div class="success-message">✅ ${message}</div>`;
+      confirmationMsg.style.display = 'block';
+      setTimeout(() => {
+        confirmationMsg.style.display = 'none';
+      }, 5000);
+    }
+
+    // Show error message
+    function showErrorMessage(message) {
+      const confirmationMsg = document.getElementById('confirmationMsg');
+      confirmationMsg.innerHTML = `<div class="error-message">❌ ${message}</div>`;
+      confirmationMsg.style.display = 'block';
+      setTimeout(() => {
+        confirmationMsg.style.display = 'none';
+      }, 5000);
+    }
+
+    // Form validation
+    function validateForm() {
+      const boxSize = document.getElementById('boxSize').value;
+      const frequency = document.getElementById('frequency').value;
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const fruits = Array.from(document.querySelectorAll('input[name="fruits"]:checked')).map(cb => cb.value);
+      const terms = document.getElementById('terms').checked;
+
+      if (!boxSize) {
+        showErrorMessage('Please select a box size.');
+        return false;
+      }
+      
+      if (fruits.length === 0) {
+        showErrorMessage('Please select at least one fruit.');
+        return false;
+      }
+      
+      if (!frequency) {
+        showErrorMessage('Please select delivery frequency.');
+        return false;
+      }
+      
+      if (!name) {
+        showErrorMessage('Please enter your name.');
+        return false;
+      }
+      
+      if (!email) {
+        showErrorMessage('Please enter your email address.');
+        return false;
+      }
+      
+      if (!isValidEmail(email)) {
+        showErrorMessage('Please enter a valid email address.');
+        return false;
+      }
+      
+      if (!address) {
+        showErrorMessage('Please enter your address.');
+        return false;
+      }
+      
+      if (!terms) {
+        showErrorMessage('Please agree to the terms and conditions.');
+        return false;
+      }
+      
+      return true;
+    }
+
+    // Email validation
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Show terms modal (placeholder)
+    function showTerms() {
+      alert('Terms and Conditions:\n\n1. Subscriptions are billed in advance\n2. You can cancel anytime\n3. Delivery is subject to availability\n4. Fresh fruit guarantee - if not satisfied, we\'ll replace it\n5. Contact us for any issues\n\nBy subscribing, you agree to these terms.');
+    }
+
+    // Form submission
+    document.getElementById('subscriptionForm').onsubmit = function(e) {
+      e.preventDefault();
+      
+      if (!validateForm()) {
+        return;
+      }
+      
+      const boxSize = document.getElementById('boxSize').value;
+      const frequency = document.getElementById('frequency').value;
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const fruits = Array.from(document.querySelectorAll('input[name="fruits"]:checked')).map(cb => cb.value);
+      
+      const subscription = { 
+        boxSize, 
+        frequency, 
+        name, 
+        email,
+        address, 
+        phone,
+        fruits, 
+        date: new Date().toISOString(),
+        id: Date.now() // Add unique ID
+      };
+      
       let subs = JSON.parse(localStorage.getItem('subscriptions') || '[]');
       subs.push(subscription);
       localStorage.setItem('subscriptions', JSON.stringify(subs));
-      document.getElementById('confirmationMsg').innerText = 'Thank you for subscribing! Your personalized fruit box will be delivered soon.';
-      document.getElementById('confirmationMsg').style.display = 'block';
+      
+      showSuccessMessage('Thank you for subscribing! Your personalized fruit box will be delivered soon. You can view your subscriptions in the "My Subscriptions" tab.');
       document.getElementById('subscriptionForm').reset();
+      
+      // Switch to subscriptions tab after successful subscription
+      setTimeout(() => {
+        showTab('my-subscriptions');
+      }, 2000);
     };
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load subscriptions on page load
+      loadSubscriptions();
+    });
   </script>
 </body>
 </html> 
